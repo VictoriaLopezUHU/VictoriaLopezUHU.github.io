@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cesium with GeoServer</title>
+    <script src="https://cdn.cesium.com/cesium/1.128/cesium.js"></script>
+    <link rel="stylesheet" href="https://cdn.cesium.com/cesium/1.128/cesium.css">
+    <style>
+        #cesiumContainer {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="cesiumContainer"></div>
+    <script>
+        // Establecer tu token de Cesium Ion
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1Mjk0Mjk5MS0wM2I1LTQxMjItODE1MS02MWM1NzUwMTU3YTUiLCJpZCI6MjkwMjI1LCJpYXQiOjE3NDM1Nzg4ODl9.w6q_ICxRZy_sY2bayOUO7TZac-OZe66Mp40xseflSbw';
+
+        // Crear el visor de Cesium
+        const viewer = new Cesium.Viewer('cesiumContainer', {
+            terrainProvider: Cesium.createWorldTerrain()
+        });
+
+        // Agregar una capa WMS desde GeoServer
+        viewer.imageryLayers.addImageryProvider(new Cesium.WebMapServiceImageryProvider({
+            url : 'http://localhost:8082/geoserver/DTcites/wms?',  // URL de tu servidor GeoServer
+            layers : 'DTcites:estaciones',  // Nombre de la capa en GeoServer
+            parameters : {
+                service : 'WMS',
+                version : '1.1.0',
+                request : 'GetMap',
+                format : 'image/png',  // Formato para la capa WMS
+                transparent : 'true',  // Transparencia para la capa
+                srs : 'CRS:84',  // Sistema de referencia espacial (SRID)
+                bbox : '-6.921696684745984,37.20257837168136,-6.921695919127186,37.202580636078686',  // Bounding box
+                width : '330',  // Ancho de la imagen WMS
+                height : '768'  // Alto de la imagen WMS
+            }
+        }));
+    </script>
+</body>
+</html>

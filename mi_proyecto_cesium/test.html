@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cesium Viewer Básico</title>
+  <script src="node_modules/cesium/Build/Cesium/Cesium.js"></script>
+  <link href="node_modules/cesium/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html, body, #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1Mjk0Mjk5MS0wM2I1LTQxMjItODE1MS02MWM1NzUwMTU3YTUiLCJpZCI6MjkwMjI1LCJpYXQiOjE3NDM1Nzg4ODl9.w6q_ICxRZy_sY2bayOUO7TZac-OZe66Mp40xseflSbw'; // puedes dejarlo vacío
+
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      shouldAnimate: true,
+      baseLayerPicker: true,
+      terrainProvider: new Cesium.EllipsoidTerrainProvider()
+    });
+
+    // Ejemplo: Añadir una entidad
+    viewer.entities.add({
+      name: "Punto de prueba",
+      position: Cesium.Cartesian3.fromDegrees(-3.7038, 40.4168, 1000),
+      point: {
+        pixelSize: 10,
+        color: Cesium.Color.RED
+      }
+    });
+  </script>
+</body>
+</html>
