@@ -26,7 +26,7 @@
     });
 
     // Agregar la capa vectorial a Cesium usando WFS
-    const wfsUrl = 'http://localhost:8082/geoserver/DTcites/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=DTcites:EdificiosDetalle&outputFormat=application/json';
+    const wfsUrl = 'https://e48a-150-214-168-140.ngrok-free.app/geoserver/DTcites/wfs?service=WFS&version=1.0.0&request=GetFeature&typeName=DTcites:EdificiosDetalle&outputFormat=application/json';
 
     fetch(wfsUrl)
       .then(response => response.json())
