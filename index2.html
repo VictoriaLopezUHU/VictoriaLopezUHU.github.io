@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>GeoServer WMS y WFS en Cesium</title>
-  <script src="https://unpkg.com/cesium@1.80.0/Build/Cesium/Cesium.js"></script>
-  <link href="https://unpkg.com/cesium@1.80.0/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <title>GeoServer WFS in Cesium</title>
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.105/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.105/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
   <style>
     html, body, #cesiumContainer {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+      width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
     }
   </style>
 </head>
@@ -18,11 +15,20 @@
   <div id="cesiumContainer"></div>
   <script>
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1Mjk0Mjk5MS0wM2I1LTQxMjItODE1MS02MWM1NzUwMTU3YTUiLCJpZCI6MjkwMjI1LCJpYXQiOjE3NDM1Nzg4ODl9.w6q_ICxRZy_sY2bayOUO7TZac-OZe66Mp40xseflSbw'; // puedes dejarlo vacío
-
-    const viewer = new Cesium.Viewer('cesiumContainer', {
-      shouldAnimate: true,
-      baseLayerPicker: true,
-      terrainProvider: new Cesium.EllipsoidTerrainProvider()
+	const viewer = new Cesium.Viewer('cesiumContainer', {
+      imageryProvider: new Cesium.EllipsoidTerrainProvider({
+        url: 'http://localhost:8082/geoserver/DTcites/wms',
+        layers: 'DTcites:EdificiosDetalle',  // Nombre de la capa
+        parameters: {
+          service: 'WMS',
+          version: '1.1.1',
+          request: 'GetMap',
+          styles: '',
+          format: 'image/png',
+          transparent: true,
+        }
+      }),
+      baseLayerPicker: false
     });
 
     // Agregar la capa vectorial a Cesium usando WFS
@@ -34,9 +40,9 @@
         const features = data.features;
 
         // Crear un objeto Cesium para cada geometría del WFS
-        features.forEach(feature => {
+        const entities = features.map(feature => {
           const coords = feature.geometry.coordinates[0]; // Suponiendo que es un polígono
-          viewer.entities.add({
+          return viewer.entities.add({
             polygon: {
               hierarchy: Cesium.Cartesian3.fromDegreesArray(coords.flat()),
               material: Cesium.Color.YELLOW.withAlpha(0.7), // color y opacidad
@@ -47,11 +53,6 @@
         });
       })
       .catch(err => console.log('Error al cargar el WFS:', err));
-
-    // Opcional: centramos la vista en una zona conocida, si no se ve la capa
-    viewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(-6.921696, 37.202579, 1000.0) // Longitud, Latitud, Altura
-    });
   </script>
 </body>
 </html>

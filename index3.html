@@ -4,13 +4,10 @@
   <meta charset="UTF-8" />
   <title>GeoServer WMS y WFS en Cesium</title>
   <script src="https://unpkg.com/cesium@1.80.0/Build/Cesium/Cesium.js"></script>
-  <link href="https://unpkg.com/cesium@1.80.0/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+  <link href="https://unpkg.com/cesium@1.80.0/Build/Cesium/Widgets/widgets.css"> rel="stylesheet" />
   <style>
     html, body, #cesiumContainer {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+      width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
     }
   </style>
 </head>
@@ -50,7 +47,7 @@
 
     // Opcional: centramos la vista en una zona conocida, si no se ve la capa
     viewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(-6.921696, 37.202579, 1000.0) // Longitud, Latitud, Altura
+      destination : Cesium.Cartesian3.fromDegrees(-6.921696, 37.202579, 1000.0) // Longitud, Latitud, Altura
     });
   </script>
 </body>
